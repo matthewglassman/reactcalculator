@@ -26,5 +26,28 @@ function reqeustHandler(request, response) {
 		if(fs.statSync(requestedResource).isDirectory()){
 			requestedResource += '/index.html';
 		}
+
+		//Asychronously read the requestedResource and send the contents to the client
+		fs.readFile(requestedResource, "binary", function(err, file){
+			//Send out a 500 Internal Error if there is an issue reading the file
+			if(err){
+				response.writeHead(500, {"Content-Type": "text/plain"});
+				response.write(err + "\n");
+				response.end();
+				return;
+			}
+
+			//Map request extensions to response mime types using a Helper Object
+
+			const contentTypesByExtension = {
+				'.html': "text/html",
+				'.css': "text/css",
+				'.js': "text/javascript"
+			};
+
+			//Helper Object to hold headers
+			const headers = {};
+			const contentType = contentTypesByExtension[path.extname(requestedResource)];
+		})
 	})
 }
