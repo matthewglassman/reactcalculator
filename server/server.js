@@ -48,6 +48,23 @@ function reqeustHandler(request, response) {
 			//Helper Object to hold headers
 			const headers = {};
 			const contentType = contentTypesByExtension[path.extname(requestedResource)];
-		})
-	})
+
+			//Set content-type field for our response headers when requested resource maps to matching content type extension
+
+			if(contentType){
+				headers["Content-Type"] = contentType;
+			}
+
+			response.writeHead(200, headers);
+			response.write(file, "binary");
+			response.end();
+		});
+	});
 }
+
+//Create instance of our server and pass in our request handler callback
+const server = http.createServer(requestHandler);
+const portNumber = 3030;
+server.listen(portNumber, function(){
+	console.log(`Server listening on port ${portNumber}`);
+});
