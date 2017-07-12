@@ -13,7 +13,14 @@ const config = {
 				test: /\.(js|jsx)$/, //RegEx to check for .js and .jsx files
 				loader: 'babel-loader' //use these loaders to transpile above file types
 			}
+			{
+				test: /\.css$/,
+				loaders: ['style-loader', 'css-loader']
+			}
 		]
+	},
+	resolve: {
+		extensions: ['.js', '.jsx']
 	}
 };
 //export config object
